@@ -1,0 +1,1393 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<time.h>
+#include<string.h>
+
+void disbribution ( char uno [108][3],char ply [108][3],int nb,int nc){
+    int k,i,j,x;
+    srand(time(NULL));
+    for(i=nc;i<nb+nc;i++){
+        x=0;
+      do{
+       k = rand() % 108;
+       if(uno[k][0]!='x'){
+          x=1;}
+       for(j=0;j<=2;j++){
+         ply[i][j]= uno[k][j]; }
+       uno[k][0]='x';
+        }
+     while(x==0); }
+             }
+
+void premcart (char ct[1][3],char ply1 [108] [3],char ply2[108] [3],char uno[108][3],int nb ) {
+         char c;
+         int k,i,j,x;
+             switch (ct[0][0]){
+               case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+                    nb=2;
+               break;
+
+               case 'P':
+                 printf("\n Joueur 2 vous avez eu un +2 ");
+                 disbribution(uno[108][3],ply2[108] [3],2,7);
+                 nb=1;
+               break;
+
+              case 'J':
+                  printf("\n joueur 1 doit saisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+                  scanf("%c",&c);
+                  ct[0][1]=c;
+                  nb=2;
+              break;
+
+             case 'I':
+                 nb=1;
+             break;
+
+             case 'B':
+               nb=1;
+             break;
+
+             case '+':
+             disbribution(uno,ply2,4,7);
+             nb=1;
+             break ;
+
+         }//acolade switch ct[0][0]
+         }
+
+
+void suprim(char ply [108][3],int nb,int nc){
+    int i,j ;
+    for (i=nb;i<=nc;i++){
+         for(j=0;j<=2;j++){
+           ply[i][j]=ply[i+1][j] ;}}
+}
+
+
+int jeux (char ct[0][3],char cj [0][3]){
+  int  x=0;
+  char a,b,c,d;
+    a=ct[0][0];
+    b=cj[0][0];
+    c=ct[0][1];
+    d=cj[0][1];
+    if(a=='J'){
+        x=1;
+    }
+    else if((a==b)||(c==d)){
+      x=1;}
+return x;
+}
+
+
+int score (char ply[108][3],int nbc,int s) {
+    int i;
+     for(i=0;i<nbc;i++){
+        switch (ply[i][0]){
+
+            case '0':
+              s=s+0;
+            break;
+
+            case '1':
+              s=s+1;
+            break;
+
+            case '2':
+             s=s+2;
+            break;
+
+            case '3':
+                s=s+3;
+            break;
+
+            case '4':
+            s=s+4;
+            break;
+
+            case '5':
+            s=s+5;
+            break;
+
+            case '6':
+            s=s+6;
+            break;
+
+            case '7':
+             s=s+7;
+            break;
+
+            case '8':
+            s=s+8;
+            break;
+
+            case '9':
+            s=s+9;
+            break;
+
+            case 'P':
+             s=s+20;
+            break;
+
+            case 'B':
+             s=s+20;
+            break;
+
+            case 'J':
+             s=s+50;
+            break;
+
+            case '+':
+            s=s+50;
+            break;
+                } //acolade switch ply[i][0]
+
+                } // acolade boucle for
+
+return s;
+}
+
+
+
+int main()
+{
+int x2,x1,ch,i,d,nb,p ,nbc1, nbc2,nc,j,joueur,nbr_tours,tj=0,s1=0,s2=0,test,k;
+char go,col,c;
+char uno [108][3]= {'0','b','\0','1','b','\0','2','b','\0','3','b','\0','4','b','\0','5','b','\0','6','b','\0','7','b','\0','8','b','\0','9','b','\0','1','b','\0','2','b','\0','3','b','\0'
+        ,'4','b','\0','5','b','\0','6','b','\0','7','b','\0','8','b','\0','9','b','\0','I','b','\0','I','b','\0','B','b','\0','B','b','\0','P','b','\0','P','b','\0',
+        '0','r','\0','1','r','\0','2','r','\0','3','r','\0','4','r','\0','5','r','\0','6','r','\0','7','r','\0','8','r','\0','9','r','\0','1','r','\0','2','r','\0','3','r','\0'
+        ,'4','r','\0','5','r','\0','6','r','\0','7','r','\0','8','r','\0','9','r','\0','I','r','\0','I','r','\0','B','r','\0','B','r','\0','P','r','\0','P','r','\0',
+        '0','j','\0','1','j','\0','2','j','\0','3','j','\0','4','j','\0','5','j','\0','6','j','\0','7','j','\0','8','j','\0','9','j','\0','1','j','\0','2','j','\0','3','j','\0'
+        ,'4','j','\0','5','j','\0','6','j','\0','7','j','\0','8','j','\0','9','j','\0','I','j','\0','I','j','\0','B','j','\0','B','j','\0','P','j','\0','P','j','\0',
+        '0','v','\0','1','v','\0','2','v','\0','3','v','\0','4','v','\0','5','v','\0','6','v','\0','7','v','\0','8','v','\0','9','v','\0','1','v','\0','2','v','\0','3','v','\0'
+        ,'4','v','\0','5','v','\0','6','v','\0','7','v','\0','8','v','\0','9','v','\0','I','v','\0','I','v','\0','B','v','\0','B','v','\0','P','v','\0','P','v','\0','J','k','\0'
+        ,'J','k','\0','J','k','\0','J','k','\0','+','4','\0','+','4','\0','+','4','\0','+','4','\0'};
+
+
+char ply1 [108][3];
+char ply2 [108][3];
+char ct [1][3];
+char cj [1][3];
+
+
+printf("||-------------------------------------------------------------------------------------------------------------------||\n||-------------------------------------------------------------------------------------------------------------------||\n                                               BIENVENU AU JEU UNO                       \n||-------------------------------------------------------------------------------------------------------------------||\n||-------------------------------------------------------------------------------------------------------------------||\n                                            veuillez choisir une option                          \n||-------------------------------------------------------------------------------------------------------------------||\n||-------------------------------------------------------------------------------------------------------------------||\n                                             1-jouer contre la machine \n                                             2-jouer a deux\n||-------------------------------------------------------------------------------------------------------------------||\n||-------------------------------------------------------------------------------------------------------------------||\n                                                  3-Quitter\n||-------------------------------------------------------------------------------------------------------------------||\n||-------------------------------------------------------------------------------------------------------------------||\n");
+
+do {
+scanf("%d",&ch);}
+while(!((ch>0)&&(ch<4)));
+
+switch (ch){
+
+case 1:
+printf("VOUS JOUEZ CONTRE LA MACHINE !!\n");
+
+      do {
+      printf("Combien de tours voulez-vous jouez\n");
+      scanf("%i",&nbr_tours);}
+      while(nbr_tours<2);
+do{
+         nb=7;
+         nc=0;
+         nbc1=7;
+         nbc2=7;
+         disbribution(uno,ply1,7,nc);
+         disbribution(uno,ply2,7,nc);
+         disbribution(uno,ct,1,0);
+         premcart ( ct,ply1, ply2, uno, 7 );
+         printf("\n");
+         printf("LE JEUX COMMENCE !! \n");
+         printf("|%s|\n",ct[0]);
+
+         joueur =2 ;
+
+
+         do {
+
+
+
+    if(joueur==1){
+        do {
+       p=-1 ;
+       i=0 ;
+       while((p==-1)||(i<nbc1)){
+        if(jeux(ct[0],ply1[i])==1){
+            p=i;
+        }
+        i++ ;
+        }
+
+    if(p==-1){
+            test=0;
+            for(i=1;i<nbc1;i++){
+             if(ply1[i][0]=='+'){
+                 test=1;
+                 x1=i;}
+            }
+            if(test==1){
+                    disbribution(uno,ply2,4,nbc2);
+           for(i=0;i<3;i++){
+           ct[0][i]=ply1[x1][i];}
+           suprim(ply1,x1,nbc1);
+           nbc1=nbc1-1;
+           nbc2=nbc2+4 ;
+           srand(time(NULL));
+           k = rand() % 4;
+           switch(k){
+           case 0:
+               col='b';
+           break;
+
+           case 1:
+               col='j';
+           break;
+
+           case 2:
+               col='r';
+           break;
+
+           case 3:
+               col='v';
+           break;}
+             ct[0][1]=col;
+             joueur=1 ;
+             }
+             else{disbribution(uno,ply1,1,nbc1);
+                   nbc1 ++ ;
+                   if(jeux(ct[0],ply1[nbc1])==1){
+
+          for(i=0;i<3;i++){
+          cj[0][i]=ply1[nbc1][i];}
+
+          for(i=0;i<3;i++){
+          ct[0][i]=ply1[nbc1][i];}
+
+          switch (cj[0][0]) {
+
+          case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+             for(i=0;i<3;i++){
+              ct[0][i]=ply1[nbc1][i];}
+             printf("|%s|",ct[0]);
+             suprim(ply1,p,nbc1);
+             nbc1=nbc1-1;
+             joueur=2 ;
+             printf("\n");
+
+         break;
+
+
+
+         case 'P':
+
+         disbribution(uno,ply2,2,nbc2);
+         for(i=0;i<3;i++){
+          ct[0][i]=ply1[nbc1][i];}
+         printf("|%s|",ct[0]);
+         suprim(ply1,nbc1,nbc1);
+         nbc1=nbc1-1;
+         nbc2=nbc2+2 ;
+         joueur=1 ;
+         printf("\n");
+
+        break;
+
+        case 'I':
+
+        for(i=0;i<3;i++){
+         ct[0][i]=ply1[nbc1][i];}
+        printf("|%s|",ct[0]);
+        suprim(ply1,nbc1,nbc1);
+        nbc1=nbc1-1;
+        joueur=1 ;
+        printf("\n");
+
+        break;
+
+        case 'B':
+          for(i=0;i<3;i++){
+         ct[0][i]=ply1[nbc1][i];}
+        printf("|%s|",ct[0]);
+        suprim(ply1,nbc1,nbc1);
+        nbc1=nbc1-1;
+        joueur=1 ;
+        printf("\n");
+
+        break;
+
+         case 'J':
+             for(i=0;i<3;i++){
+              ct[0][i]=ply1[nbc1][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply1,nbc1,nbc1);
+              nbc1=nbc1-1;
+              srand(time(NULL));
+           k = rand() % 4;
+           switch(k){
+           case 0:
+               col='b';
+           break;
+
+           case 1:
+               col='j';
+           break;
+
+           case 2:
+               col='r';
+           break;
+
+           case 3:
+               col='v';
+           break;}
+             ct[0][1]=col;
+             printf("|%s|",ct[0]);
+             joueur=2;
+        break ;
+
+
+                 } //switch
+
+                 } //if la carte qu'il a pioché tetl3ab
+        else{joueur=2;}
+
+                 } //acolade else ypiochi
+
+                 } // if  (p==1)
+    else{
+            for(i=0;i<3;i++){
+             cj[0][i]=ply1[p][i];}
+             for(i=0;i<3;i++){
+             ct[0][i]=ply1[p][i]; }
+
+             switch (cj[0][0]) {
+
+                 case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+                    for(i=0;i<3;i++){
+                     ct[0][i]=ply1[p][i];}
+                    printf("|%s|",ct[0]);
+                    suprim(ply1,p,nbc1);
+                    nbc1=nbc1-1;
+                    joueur=2 ;
+
+                 break;
+
+
+                case 'P':
+
+                 disbribution(uno,ply2,2,nbc2);
+                 for(i=0;i<3;i++){
+                   ct[0][i]=ply1[p][i];}
+                 printf("|%s|",ct[0]);
+                 suprim(ply1,p,nbc1);
+                 nbc1=nbc1-1;
+                 nbc2=nbc2+2 ;
+                 joueur=2 ;
+                 printf("\n");
+
+               break;
+
+               case 'I':
+
+               for(i=0;i<3;i++){
+                 ct[0][i]=ply1[p][i];}
+               printf("|%s|",ct[0]);
+               suprim(ply1,p,nbc1);
+               nbc1=nbc1-1;
+              joueur=1 ;
+
+              break;
+
+              case 'B':
+
+              for(i=0;i<3;i++){
+                 ct[0][i]=ply1[p][i];}
+               printf("|%s|",ct[0]);
+               suprim(ply1,p,nbc1);
+               nbc1=nbc1-1;
+              joueur=1 ;
+
+              break;
+
+        case 'J':
+
+             for(i=0;i<3;i++){
+              ct[0][i]=ply1[nbc1][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply1,nbc1,nbc1);
+              nbc1=nbc1-1;
+              srand(time(NULL));
+           k = rand() % 4;
+
+           switch(k){
+           case 0:
+               col='b';
+           break;
+
+           case 1:
+               col='j';
+           break;
+
+           case 2:
+               col='r';
+           break;
+
+           case 3:
+               col='v';
+           break;}
+             ct[0][1]=col;
+             printf("|%s|",ct[0]);
+             joueur=2;
+        break ;
+
+                } //switch l war9a li laabetha el machine
+
+
+                } //else tnajem talaab war9a
+
+
+
+                 } //acolade while joueur ==1
+                while(joueur==1);
+                 } // acolade if joueur==1
+
+
+            if(joueur==2){
+            do{
+
+           do {
+          printf("\n");
+          for(i=0;i<nbc2;i++){
+             printf("|%s|",ply2[i]); }
+          printf("\n Joueur 2 saisir la position de la carte que vous voulez jouer \n saisir 0 pour piocher");
+          scanf("%i",&p);
+          p=p-1 ;}
+         while (!((p<=nb+nc)&&(p>=-1)));
+
+
+    if(p==-1){
+
+      disbribution(uno,ply2,1,nbc2);
+      nbc2 ++ ;
+      for(i=0;i<nbc2;i++){
+        printf("|%s|",ply2[i]); }
+
+       do {
+        printf("\n Joueur2 saisir la position de la carte a jouer \n saisir 0 pour passer le tour");
+        scanf("%i",&p);
+        p=p-1 ;}
+      while (!((p<=nb+nc)&&(p>=-1)));
+
+      if(p==-1){
+        joueur=1 ; }
+      else{
+            if (ply2[p][0]=='+'){
+                     test=0;
+            for (i=0;i<=nbc2;i++){
+                if(jeux(ct[0],ply2[i])==1){
+                    test=1;}}
+          if (test == 0){
+         disbribution(uno,ply1,4,nbc1);
+           for(i=0;i<3;i++){
+         ct[0][i]=ply2[p][i];}
+         suprim(ply2,p,nbc2);
+         nbc2=nbc2-1;
+         nbc1=nbc1+4 ;
+         printf("choisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+         do {
+             scanf("%c",&col);
+         }
+         while((col!='r')&&(col!='b')&&(col!='v')&&(col!='j'));
+             ct[0][1]=col;
+             joueur=2 ; }
+          else {
+                do{
+                printf("\n");
+               for(i=0;i<nbc2;i++){
+                 printf("|%s|",ply2[i]);
+               }
+         printf("Vous ne pouvez pas jouez +4 \n");
+         printf("Saisir la position de la carte a jouer \n");
+         scanf("%d",&p);
+         p=p-1;
+          }while (!((p>=-1)&&(p<=nbc2)));
+           }
+
+            }
+            else {
+
+           x2=jeux(ct[0],ply2[p]);
+
+          if(x2==1){
+
+          for(i=0;i<3;i++){
+          cj[0][i]=ply2[p][i];}
+
+          for(i=0;i<3;i++){
+          ct[0][i]=ply2[p][i];}
+
+          switch (cj[0][0]) {
+
+          case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+             for(i=0;i<3;i++){
+              ct[0][i]=ply2[p][i];}
+             printf("|%s|",ct[0]);
+             suprim(ply2,p,nbc2);
+             nbc2=nbc2-1;
+             joueur=1 ;
+
+         break;
+
+
+
+         case 'P':
+
+         disbribution(uno,ply1,2,nbc1);
+         for(i=0;i<3;i++){
+          ct[0][i]=ply2[p][i];}
+         printf("|%s|",ct[0]);
+         suprim(ply2,p,nbc2);
+         nbc2=nbc2-1;
+         nbc1=nbc1+2 ;
+         joueur=2 ;
+         printf("\n");
+
+        break;
+
+        case 'I':
+
+        for(i=0;i<3;i++){
+         ct[0][i]=ply2[p][i];}
+        printf("|%s|",ct[0]);
+        suprim(ply2,p,nbc2);
+        nbc2=nbc2-1;
+        joueur=2 ;
+
+        break;
+
+        case 'B':
+          for(i=0;i<3;i++){
+            ct[0][i]=ply2[p][i];}
+          printf("|%s|",ct[0]);
+          suprim(ply2,p,nbc2);
+          nbc2=nbc2-1;
+          joueur = 2 ;
+
+        break;
+
+         case 'J':
+             for(i=0;i<3;i++){
+              ct[0][i]=ply2[p][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply2,p,nbc2);
+              nbc2=nbc2-1;
+              printf("\n Saisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+             do {
+             scanf('%c',&c);}
+             while((c!='r')&&(c!='b')&&(c!='v')&&(c!='j'));
+             ct[0][1]=c;
+             printf("|%s|",ct[0]);
+             joueur=1;
+
+        break ;
+
+
+                  }//acolade switch cj[0][0]
+
+                  } //acolade if (x2==1)
+
+                  } //acolade else mech +4
+
+                  } //acolade else
+
+                  } // acolade if(p==-1)
+
+       else{
+            if(ply2[p][0]=='+'){
+                test=0;
+            for (i=0;i<=nbc2;i++){
+                if(jeux(ct[0],ply2[i])==1){
+                    test=1;}}
+          if (test == 0){
+         disbribution(uno,ply1,4,nbc1);
+           for(i=0;i<3;i++){
+         ct[0][i]=ply2[p][i];}
+         suprim(ply2,p,nbc2);
+         nbc2=nbc2-1;
+         nbc1=nbc1+4 ;
+
+         printf("choisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+               do {
+             scanf("%c",&col);
+         }
+         while((col!='r')&&(col!='b')&&(col!='v')&&(col!='j'));
+             ct[0][1]=col;
+             joueur=2 ; }
+          else {
+                do{
+                printf("\n");
+               for(i=0;i<nbc2;i++){
+                 printf("|%s|",ply2[i]);
+               }
+         printf("\n");
+         printf("Vous ne pouvez pas jouez +4 \n");
+         printf("Saisir la position de la carte a jouer \n");
+         scanf("%d",&p);
+         p=p-1;
+          }while (!((p>=-1)&&(p<=nbc2)));
+           }
+
+            }
+            else {
+         x2=jeux(ct[0],ply2[p]);
+         if(x2==1){
+             for(i=0;i<3;i++){
+             cj[0][i]=ply2[p][i];}
+             for(i=0;i<3;i++){
+             ct[0][i]=ply2[p][i]; }
+
+             switch (cj[0][0]) {
+
+                 case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+                    for(i=0;i<3;i++){
+                    ct[0][i]=ply2[p][i];}
+                    printf("|%s|",ct[0]);
+                    suprim(ply2,p,nbc2);
+                    nbc2=nbc2-1;
+                    joueur=1 ;
+
+                 break;
+
+
+                case 'P':
+
+                 disbribution(uno,ply1,2,nbc1);
+                 for(i=0;i<3;i++){
+                   ct[0][i]=ply2[p][i];}
+                 printf("|%s|",ct[0]);
+                 suprim(ply2,p,nbc2);
+                 nbc2=nbc2-1;
+                 nbc1=nbc1+2 ;
+                 joueur=2 ;
+                 printf("\n");
+
+               break;
+
+               case 'I':
+
+               for(i=0;i<3;i++){
+                 ct[0][i]=ply2[p][i];}
+               printf("|%s|",ct[0]);
+               suprim(ply2,p,nbc2);
+               nbc2=nbc2-1;
+              joueur=2 ;
+
+              break;
+
+              case 'B':
+
+              for(i=0;i<3;i++){
+                 ct[0][i]=ply2[p][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply2,p,nbc2);
+              nbc2=nbc2-1;
+              joueur = 2 ;
+
+              break;
+
+             case 'J':
+                 for(i=0;i<3;i++){
+              ct[0][i]=ply2[p][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply2,p,nbc2);
+              nbc2=nbc2-1;
+                 printf("\n Saisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+             do {
+
+             scanf('%c',&c);}
+             while((c!='r')&&(c!='b')&&(c!='v')&&(c!='j'));
+             ct[0][1]=c;
+             printf("|%s|",ct[0]);
+             joueur=1;
+             break ;
+
+                 }   //acolade switch cj[0][0]
+
+                 }  //acolade switch cj[0][0]
+
+                 } //acolade la carte n est pas +4
+
+                 }  // acolade else
+
+                 }while(joueur==2);
+
+                 } //acolade if(joueur==2)
+
+
+
+         }
+         while((nbc1>1)&&(nbc2>1));
+
+
+
+
+          if (nbc1==0){
+          printf("\n");
+          printf("Vous avez perdu\n");
+          s2=score(ply2,nbc2,s1);}
+          else{
+          printf("\n");
+          printf("Vous avez gagne\n");
+          s1=score(ply1,nbc1,s1);}
+          printf("Votre score est %i",s2);
+          printf("Score de l ordinateur est %i",s1);
+          tj=tj+1 ;
+
+         }
+         while(tj!=nbr_tours);
+ if(tj==nbr_tours){
+    if(s2<s1)
+        printf("\n Vous avez gangé la partie");
+    else
+        printf("\n Vous avez perdu la partie");
+ }
+
+
+
+break ;
+
+
+
+
+case 2:
+    printf("VOUS JOUEZ A 2 !!\n");
+
+    do {
+      printf("Combien de tours voulez-vous jouez\n");
+      scanf("%i",&nbr_tours);}
+    while(nbr_tours<2);
+
+     do{
+     do {
+
+      printf("Joueur1 tapez 1  pour distribuer les cartes ");
+      scanf("%i",&d);
+       }
+    while(d!=1) ;
+
+     if (d==1){
+        nbc1=7;
+        nbc2=7;
+        nc=0  ;
+        disbribution(uno,ply1,7,nc);
+        disbribution(uno,ply2,7,nc); }
+        printf("\n");
+
+        printf("Appuyer p pour  retourner  une carte  ");
+
+     do {
+      scanf("%c",&go);}
+     while ((go!='p')&&(go!='P'));
+
+     if ((go=='p')||(go=='P')){
+          disbribution(uno,ct,1,0);
+          printf("\n");
+          printf("|%s|",ct[0]);}
+
+     joueur=2 ;
+     premcart(ct[0],ply1,ply2,uno,joueur);
+
+
+
+
+
+    do{
+    if(joueur==2){
+    do{
+        do {
+          printf("\n");
+
+          for(i=0;i<nbc2;i++){
+             printf("|%s|",ply2[i]); }
+
+          printf("\n Joueur 2 saisir la position de la carte que vous voulez jouer \n saisir 0 pour piocher");
+          scanf("%i",&p);
+          p=p-1 ;}
+        while (!((p<=nb+nc)&&(p>=-1)));
+
+
+    if(p==-1){
+
+      disbribution(uno,ply2,1,nbc2);
+      nbc2 ++ ;
+      for(i=0;i<nbc2;i++){
+        printf("|%s|",ply2[i]); }
+
+       do {
+        printf("\n Joueur2 saisir la position de la carte a jouer \n saisir 0 pour passer le tour");
+        scanf("%i",&p);
+        p=p-1 ;}
+      while (!((p<=nb+nc)&&(p>=-1)));
+
+      if(p==-1){
+        joueur=1 ; }
+      else{
+            if (ply2[p][0]=='+'){
+                     test=0;
+            for (i=0;i<=nbc2;i++){
+                if(jeux(ct[0],ply2[i])==1){
+                    test=1;}}
+          if (test == 0){
+         disbribution(uno,ply1,4,nbc1);
+           for(i=0;i<3;i++){
+         ct[0][i]=ply2[p][i];}
+         suprim(ply2,p,nbc2);
+         nbc2=nbc2-1;
+         nbc1=nbc1+4 ;
+         printf("choisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+         do {
+             scanf("%c",&col);
+         }
+         while((col!='r')&&(col!='b')&&(col!='v')&&(col!='j'));
+             ct[0][1]=col;
+             joueur=2 ; }
+          else {
+                do{
+                printf("\n");
+               for(i=0;i<nbc2;i++){
+                 printf("|%s|",ply2[i]);
+               }
+         printf("Vous ne pouvez pas jouez +4 \n");
+         printf("Saisir la position de la carte a jouer \n");
+         scanf("%d",&p);
+         p=p-1;
+          }while (!((p>=-1)&&(p<=nbc2)));
+           }
+
+            }
+            else {
+
+           x2=jeux(ct[0],ply2[p]);
+
+          if(x2==1){
+
+          for(i=0;i<3;i++){
+          cj[0][i]=ply2[p][i];}
+
+          for(i=0;i<3;i++){
+          ct[0][i]=ply2[p][i];}
+
+          switch (cj[0][0]) {
+
+          case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+             for(i=0;i<3;i++){
+              ct[0][i]=ply2[p][i];}
+             printf("|%s|",ct[0]);
+             suprim(ply2,p,nbc2);
+             nbc2=nbc2-1;
+             joueur=1 ;
+
+         break;
+
+
+
+         case 'P':
+
+         disbribution(uno,ply1,2,nbc1);
+         for(i=0;i<3;i++){
+          ct[0][i]=ply2[p][i];}
+         printf("|%s|",ct[0]);
+         suprim(ply2,p,nbc2);
+         nbc2=nbc2-1;
+         nbc1=nbc1+2 ;
+         joueur=2 ;
+         printf("\n");
+
+        break;
+
+        case 'I':
+
+        for(i=0;i<3;i++){
+         ct[0][i]=ply2[p][i];}
+        printf("|%s|",ct[0]);
+        suprim(ply2,p,nbc2);
+        nbc2=nbc2-1;
+        joueur=2 ;
+
+        break;
+
+        case 'B':
+          for(i=0;i<3;i++){
+            ct[0][i]=ply2[p][i];}
+          printf("|%s|",ct[0]);
+          suprim(ply2,p,nbc2);
+          nbc2=nbc2-1;
+          joueur = 2 ;
+
+        break;
+
+         case 'J':
+             for(i=0;i<3;i++){
+              ct[0][i]=ply2[p][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply2,p,nbc2);
+              nbc2=nbc2-1;
+               printf("\n Saisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+             do {
+
+             scanf('%c',&c);}
+             while((c!='r')&&(c!='b')&&(c!='v')&&(c!='j'));
+             ct[0][1]=c;
+             printf("|%s|",ct[0]);
+             joueur=1;
+
+        break ;
+
+
+                  }//acolade switch cj[0][0]
+
+                  } //acolade if (x2==1)
+
+                  } //acolade else mech +4
+
+                  } //acolade else
+
+                  } // acolade if(p==-1)
+
+       else{
+            if(ply2[p][0]=='+'){
+                test=0;
+            for (i=0;i<=nbc2;i++){
+                if(jeux(ct[0],ply2[i])==1){
+                    test=1;}}
+          if (test == 0){
+         disbribution(uno,ply1,4,nbc1);
+           for(i=0;i<3;i++){
+         ct[0][i]=ply2[p][i];}
+         suprim(ply2,p,nbc2);
+         nbc2=nbc2-1;
+         nbc1=nbc1+4 ;
+         printf("choisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+         do {
+             scanf("%c",&col);
+         }
+         while((col!='r')&&(col!='b')&&(col!='v')&&(col!='j'));
+             ct[0][1]=col;
+             joueur=2 ; }
+          else {
+                do{
+                printf("\n");
+               for(i=0;i<nbc2;i++){
+                 printf("|%s|",ply2[i]);
+               }
+         printf("\n Vous ne pouvez pas jouez +4 \n");
+         printf("Saisir la position de la carte a jouer \n");
+         scanf("%d",&p);
+         p=p-1;
+          }while (!((p>=-1)&&(p<=nbc2)));
+           }
+
+            }
+            else {
+         x2=jeux(ct[0],ply2[p]);
+         if(x2==1){
+             for(i=0;i<3;i++){
+             cj[0][i]=ply2[p][i];}
+             for(i=0;i<3;i++){
+             ct[0][i]=ply2[p][i]; }
+
+             switch (cj[0][0]) {
+
+                 case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+                    for(i=0;i<3;i++){
+                    ct[0][i]=ply2[p][i];}
+                    printf("|%s|",ct[0]);
+                    suprim(ply2,p,nbc2);
+                    nbc2=nbc2-1;
+                    joueur=1 ;
+
+                 break;
+
+
+                case 'P':
+
+                 disbribution(uno,ply1,2,nbc1);
+                 for(i=0;i<3;i++){
+                   ct[0][i]=ply2[p][i];}
+                 printf("|%s|",ct[0]);
+                 suprim(ply2,p,nbc2);
+                 nbc2=nbc2-1;
+                 nbc1=nbc1+2 ;
+                 joueur=2 ;
+                 printf("\n");
+
+               break;
+
+               case 'I':
+
+               for(i=0;i<3;i++){
+                 ct[0][i]=ply2[p][i];}
+               printf("|%s|",ct[0]);
+               suprim(ply2,p,nbc2);
+               nbc2=nbc2-1;
+               joueur=2 ;
+
+              break;
+
+              case 'B':
+
+              for(i=0;i<3;i++){
+                 ct[0][i]=ply2[p][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply2,p,nbc2);
+              nbc2=nbc2-1;
+              joueur = 2 ;
+
+              break;
+
+             case 'J':
+                 for(i=0;i<3;i++){
+              ct[0][i]=ply2[p][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply2,p,nbc2);
+              nbc2=nbc2-1;
+                 printf("\n Saisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+             do {
+
+             scanf('%c',&c);}
+             while((c!='r')&&(c!='b')&&(c!='v')&&(c!='j'));
+             ct[0][1]=c;
+             printf("|%s|",ct[0]);
+             joueur=1;
+             break ;
+
+                 }   //acolade switch cj[0][0]
+
+                 }  //acolade switch cj[0][0]
+
+                 } //acolade la carte n est pas +4
+
+                 }  // acolade else
+
+                 }while(joueur==2);
+
+                 } //acolade if(joueur==2)
+
+
+
+    if(joueur==1){
+    do {
+        do {
+          printf("\n");
+
+          for(i=0;i<nbc1;i++){
+             printf("|%s|",ply1[i]); }
+
+          printf("\n Joueur 1 saisir la position de la carte que vous voulez jouer \n saisir 0 pour piocher");
+          scanf("%i",&p);
+          p=p-1 ;}
+        while (!((p<=nb+nc)&&(p>=-1)));
+
+
+    if(p==-1){
+
+      disbribution(uno,ply1,1,nbc1);
+      nbc1 ++ ;
+      for(i=0;i<nbc1;i++){
+        printf("|%s|",ply1[i]); }
+
+       do {
+        printf("\n Joueur1 saisir la position de la carte a jouer \n saisir 0 pour passer le tour");
+        scanf("%i",&p);
+        p=p-1 ;}
+      while (!((p<=nb+nc)&&(p>=-1)));
+
+      //attention !!
+
+      if(p==-1){
+        joueur=2 ; }
+      else{
+            if(ply1[p][0]=='+')
+                {    test=0;
+            for (i=0;i<=nbc1;i++){
+                if(jeux(ct[0],ply1[i])==1){
+                    test=1;}}
+          if (test == 0){
+         disbribution(uno,ply2,4,nbc2);
+           for(i=0;i<3;i++){
+         ct[0][i]=ply1[p][i];}
+         suprim(ply1,p,nbc1);
+         nbc1=nbc1-1;
+         nbc2=nbc2+4 ;
+         printf("choisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+         do {
+             scanf("%c",&col);
+         }
+         while((col!='r')&&(col!='b')&&(col!='v')&&(col!='j'));
+             ct[0][1]=col;
+             printf("%s",ct[0]);
+             joueur=1 ; }
+          else {
+                do{
+                printf("\n");
+               for(i=0;i<nbc1;i++){
+                 printf("|%s|",ply1[i]);
+               }
+         printf("\n Vous ne pouvez pas jouez +4 \n");
+         printf("Saisir la position de la carte a jouer \n");
+         scanf("%d",&p);
+         p=p-1;
+          }while (!((p>=-1)&&(p<=nbc1)));
+           }}
+            else {
+       x2=jeux(ct[0],ply1[p]);
+
+        if(x2==1){
+
+          for(i=0;i<3;i++){
+          cj[0][i]=ply1[p][i];}
+
+          for(i=0;i<3;i++){
+          ct[0][i]=ply1[p][i];}
+
+          switch (cj[0][0]) {
+
+          case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+             for(i=0;i<3;i++){
+              ct[0][i]=ply1[p][i];}
+             printf("|%s|",ct[0]);
+             suprim(ply1,p,nbc1);
+             nbc1=nbc1-1;
+             joueur=2 ;
+             printf("\n");
+
+         break;
+
+
+
+         case 'P':
+
+         disbribution(uno,ply2,2,nbc2);
+         for(i=0;i<3;i++){
+          ct[0][i]=ply1[p][i];}
+         printf("|%s|",ct[0]);
+         suprim(ply1,p,nbc1);
+         nbc1=nbc1-1;
+         nbc2=nbc2+2 ;
+         joueur=1 ;
+         printf("\n");// aalech hedhi ?
+
+        break;
+
+        case 'I':
+
+        for(i=0;i<3;i++){
+         ct[0][i]=ply1[p][i];}
+        printf("|%s|",ct[0]);
+        suprim(ply1,p,nbc1);
+        nbc1=nbc1-1;
+        joueur=1 ;
+        printf("\n");
+
+        break;
+
+        case 'B':
+          for(i=0;i<3;i++){
+            ct[0][i]=ply1[p][i];}
+          printf("|%s|",ct[0]);
+          suprim(ply1,p,nbc1);
+          nbc1=nbc1-1;
+          joueur = 1 ;
+
+        break;
+
+         case 'J':
+             for(i=0;i<3;i++){
+              ct[0][i]=ply1[p][i];}
+              printf("|%s|",ct[0]);
+              suprim(ply1,p,nbc1);
+              nbc1=nbc1-1;
+              printf("\n Saisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+             do {
+
+             scanf('%c',&c);}
+             while((c!='r')&&(c!='b')&&(c!='v')&&(c!='j'));
+             ct[0][1]=c;
+             printf("|%s|",ct[0]);
+             joueur=2;
+        break ;
+
+
+                  }//acolade switch cj[0][0]
+
+                  } //acolade if (x2==1)
+
+                  } // acolade else la carte n est pas +4
+
+                  } //acolade else
+
+                  } // acolade if(p==-1)
+
+       else{
+            if(ply1[p][0]=='+'){
+                    test=0;
+            for (i=0;i<=nbc1;i++){
+                if(jeux(ct[0],ply1[i])==1){
+                    test=1;}}
+          if (test == 0){
+         disbribution(uno,ply2,4,nbc2);
+           for(i=0;i<3;i++){
+         ct[0][i]=ply1[p][i];}
+         suprim(ply1,p,nbc1);
+         nbc1=nbc1-1;
+         nbc2=nbc2+4 ;
+         printf("choisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+         do {
+             scanf("%c",&col);
+         }
+         while((col!='r')&&(col!='b')&&(col!='v')&&(col!='j'));
+             ct[0][1]=col;
+             joueur=1 ; }
+          else {
+                do{
+                printf("\n");
+               for(i=0;i<nbc1;i++){
+                 printf("|%s|",ply1[i]);
+               }
+         printf("Vous ne pouvez pas jouez +4 \n");
+         printf("Saisir la position de la carte a jouer \n");
+         scanf("%d",&p);
+         p=p-1;
+          }while (!((p>=-1)&&(p<=nbc1)));
+           }
+            }
+        else {
+        x2=jeux(ct[0],ply1[p]);
+         if(x2==1){
+             for(i=0;i<3;i++){
+             cj[0][i]=ply1[p][i];}
+             for(i=0;i<3;i++){
+             ct[0][i]=ply1[p][i]; }
+
+             switch (cj[0][0]) {
+
+                 case '0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':case'8':case'9':
+
+                    for(i=0;i<3;i++){
+                     ct[0][i]=ply1[p][i];}
+                    printf("|%s|",ct[0]);
+                    suprim(ply1,p,nbc1);
+                    nbc1=nbc1-1;
+                    joueur=2 ;
+
+                 break;
+
+
+                case 'P':
+
+                 disbribution(uno,ply2,2,nbc2);
+                 for(i=0;i<3;i++){
+                   ct[0][i]=ply1[p][i];}
+                 printf("|%s|",ct[0]);
+                 suprim(ply1,p,nbc1);
+                 nbc1=nbc1-1;
+                 nbc2=nbc2+2 ;
+                 joueur=2 ;
+                 printf("\n");
+
+               break;
+
+               case 'I':
+
+               for(i=0;i<3;i++){
+                 ct[0][i]=ply1[p][i];}
+               printf("|%s|",ct[0]);
+               suprim(ply1,p,nbc1);
+               nbc1=nbc1-1;
+              joueur=1 ;
+
+              break;
+
+              case 'B':
+
+              for(i=0;i<3;i++){
+                 ct[0][i]=ply1[p][i];}
+               printf("|%s|",ct[0]);
+               suprim(ply1,p,nbc1);
+               nbc1=nbc1-1;
+               joueur=1 ;
+
+              break;
+
+             case 'J':
+                 for(i=0;i<3;i++){
+                  ct[0][i]=ply1[p][i];}
+                 printf("|%s|",ct[0]);
+                 suprim(ply1,p,nbc1);
+                 nbc1=nbc1-1;
+                    printf("\n Saisir la couleur r pour rouge v pour vert b pour bleu j pour jaune");
+                do {
+                scanf('%c',&c);}
+                while((c!='r')&&(c!='b')&&(c!='v')&&(c!='j'));
+                ct[0][1]=c;
+                printf("|%s|",ct[0]);
+                joueur=2;
+             break ;
+
+                 }   //acolade switch cj[0][0]
+
+                 }  //acolade if(x2==1)
+
+                 } // else la carte n est pas +4
+
+                 }  // acolade else
+
+
+                 } //acolade while joueur ==1
+                while(joueur==1);
+            }
+
+
+
+    }
+    while((nbc1>1)&&(nbc2>1));
+
+
+    if (nbc1==0){
+    s2=score(ply2,nbc2,s1);
+    printf("JOUEUR 1 GAGNE!! \n");}
+
+    else{
+    s1=score(ply1,nbc1,s1);
+    printf("JOUEUR 2 GAGNE!! \n");}
+
+    printf("Score joueur 1 est %i\n",s1);
+    printf("Score joueur 2 est %i\n",s2);
+    tj=tj+1 ;
+
+     }
+     while(tj!=nbr_tours);
+     if(tj==nbr_tours){
+    if(s2<s1)
+        printf("\n Joueur 2 gange la partie");
+    else
+        printf("\n Joueur 1 gange la partie");
+ }
+
+
+break ;
+
+
+   case 3:printf("||-------------------------------------------------------------------------------------------------------------------||\n||-------------------------------------------------------------------------------------------------------------------||\n                                                  au revoir   \n||-------------------------------------------------------------------------------------------------------------------||\n||-------------------------------------------------------------------------------------------------------------------||\n");
+break;
+
+
+    }//acolade switch ch
+
+return 0;
+    }
