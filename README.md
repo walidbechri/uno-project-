@@ -1,2 +1,2 @@
 # uno-project-in-C
-project game uno 
+project game uno en c 
